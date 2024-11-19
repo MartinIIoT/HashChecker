@@ -6,7 +6,9 @@ def get_hash(filePath, hashType):
     # Generate HASH from file
     with open(filePath, 'rb') as f:
         data = f.read()
-        if hashType == 64:
+        if hashType == 32:
+            hash = hashlib.md5(data).hexdigest()
+        elif hashType == 64:
             hash = hashlib.sha256(data).hexdigest()
         elif hashType == 128:
             hash = hashlib.sha512(data).hexdigest()
@@ -26,7 +28,12 @@ def highlight_differences(a, b):
 
 
 def compare_hash(knownHash=1, fileHash=2, typeHash=64):
-    textHash = "SHA256" if typeHash == 64 else "SHA512"
+    if typeHash == 32:
+        textHash = "MD5"
+    elif typeHash == 64:
+        textHash = "SHA256"
+    elif typeHash == 128:
+        textHash = "SHA512"
 
     if knownHash == fileHash:
         print()
@@ -53,7 +60,10 @@ def verify_hash(file_path, known_hash):
     known_hash = known_hash.lower()
 
     # Get HASH from file
-    if len(known_hash) == 64:
+    if len(known_hash) == 32:
+        file_hash = get_hash(file_path, 32)
+        compare_hash(known_hash, file_hash, 32)
+    elif len(known_hash) == 64:
         file_hash = get_hash(file_path, 64)
         compare_hash(known_hash, file_hash, 64)
     elif len(known_hash) == 128:
