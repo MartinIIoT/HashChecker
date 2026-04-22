@@ -10,6 +10,8 @@ def get_hash(filePath, hashType):
             hash = hashlib.md5(data).hexdigest()
         elif hashType == 64:
             hash = hashlib.sha256(data).hexdigest()
+        elif hashType == 96:
+            hash = hashlib.sha384(data).hexdigest()
         elif hashType == 128:
             hash = hashlib.sha512(data).hexdigest()
         else:
@@ -32,6 +34,8 @@ def compare_hash(knownHash=1, fileHash=2, typeHash=64):
         textHash = "MD5"
     elif typeHash == 64:
         textHash = "SHA256"
+    elif typeHash == 96:
+        textHash = "SHA384"
     elif typeHash == 128:
         textHash = "SHA512"
 
@@ -66,6 +70,9 @@ def verify_hash(file_path, known_hash):
     elif len(known_hash) == 64:
         file_hash = get_hash(file_path, 64)
         compare_hash(known_hash, file_hash, 64)
+    elif len(known_hash) == 96:
+        file_hash = get_hash(file_path, 96)
+        compare_hash(known_hash, file_hash, 96)
     elif len(known_hash) == 128:
         file_hash = get_hash(file_path, 128)
         compare_hash(known_hash, file_hash, 128)
